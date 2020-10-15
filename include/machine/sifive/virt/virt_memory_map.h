@@ -1,7 +1,7 @@
 // EPOS EPOSMote III (ARM Cortex-M3) Memory Map
 
-#ifndef __sifive_memory_map_h
-#define __sifive_memory_map_h
+#ifndef __virt_memory_map_h
+#define __virt_memory_map_h
 
 #include <machine/sifive/sifive_memory_map.h>
 

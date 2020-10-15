@@ -29,39 +29,7 @@ public:
         free(addr, bytes);
     }
 
-    void * alloc(unsigned int bytes) {
-        db<Heaps>(TRC) << "Heap::alloc(this=" << this << ",bytes=" << bytes;
-
-        if(!bytes)
-            return 0;
-
-        if(!Traits<CPU>::unaligned_memory_access)
-            while((bytes % sizeof(void *)))
-                ++bytes;
-
-        if(typed)
-            bytes += sizeof(void *);  // add room for heap pointer
-        bytes += sizeof(int);         // add room for size
-        if(bytes < sizeof(Element))
-            bytes = sizeof(Element);
-
-        Element * e = search_decrementing(bytes);
-        if(!e) {
-            out_of_memory();
-            return 0;
-        }
-
-        int * addr = reinterpret_cast<int *>(e->object() + e->size());
-
-        if(typed)
-            *addr++ = reinterpret_cast<int>(this);
-        *addr++ = bytes;
-
-        db<Heaps>(TRC) << ") => " << reinterpret_cast<void *>(addr) << endl;
-
-        return addr;
-    }
-
+    void * alloc(unsigned int bytes); 
     void free(void * ptr, unsigned int bytes) {
         db<Heaps>(TRC) << "Heap::free(this=" << this << ",ptr=" << ptr << ",bytes=" << bytes << ")" << endl;
 

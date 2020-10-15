@@ -23,7 +23,7 @@ private:
 
 public:
     // Page Flags
-    typedef MMU_Common<0, 0, 0>::Flags ARMv7_Flags;
+    typedef MMU_Common<0, 0, 0>::Flags RISCV_Flags;
 
     // Page_Table
     class Page_Table {};
@@ -77,59 +77,17 @@ public:
     class DMA_Buffer: public Chunk
     {
     public:
-        DMA_Buffer(unsigned int s): Chunk(s, Flags::CT) {
-            db<MMU>(TRC) << "MMU::DMA_Buffer() => " << *this << endl;
-        }
-
-        Log_Addr log_address() const { return phy_address(); }
-
-        friend Debug & operator<<(Debug & db, const DMA_Buffer & b) {
-            db << "{phy=" << b.phy_address()
-               << ",log=" << b.log_address()
-               << ",size=" << b.size()
-               << ",flags=" << b.flags() << "}";
-            return db;
-        }
+        DMA_Buffer(unsigned int s): Chunk(s, Flags::CT){};
     };
 
 public:
     MMU() {}
 
-    static Phy_Addr alloc(unsigned int bytes = 1) {
-        Phy_Addr phy(false);
-        if(bytes) {
-            List::Element * e = _free.search_decrementing(bytes);
-            if(e)
-                phy = reinterpret_cast<unsigned int>(e->object()) + e->size();
-            else
-                db<MMU>(ERR) << "MMU::alloc() failed!" << endl;
-        }
-        db<MMU>(TRC) << "MMU::alloc(bytes=" << bytes << ") => " << phy << endl;
+    static Phy_Addr alloc(unsigned int bytes = 1);
 
-        return phy;
-    };
+    static Phy_Addr calloc(unsigned int bytes = 1);
 
-    static Phy_Addr calloc(unsigned int bytes = 1) {
-        Phy_Addr phy = alloc(bytes);
-        memset(phy, 0, bytes);
-        return phy;
-    }
-
-    static void free(Phy_Addr addr, unsigned int n = 1) {
-        db<MMU>(TRC) << "MMU::free(addr=" << addr << ",n=" << n << ")" << endl;
-
-        // No unaligned addresses if the CPU doesn't support it
-        assert(Traits<CPU>::unaligned_memory_access || !(addr % 4));
-
-        // Free blocks must be large enough to contain a list element
-        assert(n > sizeof (List::Element));
-
-        if(addr && n) {
-            List::Element * e = new (addr) List::Element(addr, n);
-            List::Element * m1, * m2;
-            _free.insert_merging(e, &m1, &m2);
-        }
-    }
+    static void free(Phy_Addr addr, unsigned int n = 1);
 
     static unsigned int allocable() { return _free.head() ? _free.head()->size() : 0; }
 
