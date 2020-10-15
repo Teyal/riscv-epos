@@ -169,17 +169,17 @@ cortex_DATA_NAME	:= .data
 cortex_IMG_SUFFIX	:= .img
 endif
 
-ifeq ($(MMOD),Sifive)
-cortex_EMULATOR		=  qemu-system-riscv64 -machine sifive_e -m $(MEM_SIZE) -serial mon:stdio -serial null -nographic -no-reboot -kernel 
-cortex_CC_FLAGS		:= 
-cortex_AS_FLAGS		:=
-cortex_LD_FLAGS		:= --gc-sections -nostartfiles -nostdlib -nodefaultlibs
-cortex_DEBUGGER		:= riscv64-unknown-linux-gnu-gdb
-cortex_FLASHER		= $(TLS)/eposflash/eposflash-$(MMOD) -d /dev/ttyACM0 -f
-cortex_MAGIC		:= --omagic
-cortex_CODE_NAME	:= .init
-cortex_DATA_NAME	:= .data
-cortex_IMG_SUFFIX	:= .img
+ifeq ($(MMOD),virt)
+sifive_EMULATOR		=  qemu-system-riscv64 -machine virt -m $(MEM_SIZE) -serial mon:stdio -serial null -nographic -no-reboot -kernel 
+sifive_CC_FLAGS		:= 
+sifive_AS_FLAGS		:=
+sifive_LD_FLAGS		:= --gc-sections -nostartfiles -nostdlib -nodefaultlibs
+sifive_DEBUGGER		:= riscv64-unknown-linux-gnu-gdb
+sifive_FLASHER		= 
+sifive_MAGIC		:= --omagic
+sifive_CODE_NAME	:= .init
+sifive_DATA_NAME	:= .data
+sifive_IMG_SUFFIX	:= .img
 endif
 
 

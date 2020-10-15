@@ -10,12 +10,12 @@
 #define SMOD library
 #define ARCH riscv
 #define MACH sifive
-#define MMOD sifive_e
+#define MMOD virt
 #define APPL hello
 #define __mode_library__
 #define __arch_riscv__
 #define __mach_sifive__
-#define __mmod_sifive_e__
+#define __mmod_virt__
 
 //============================================================================
 // NAMESPACES AND DEFINITIONS

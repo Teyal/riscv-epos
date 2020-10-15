@@ -7,7 +7,7 @@
 
 __BEGIN_SYS
 
-struct Memory_Map: public Cortex_Memory_Map
+struct Memory_Map: public Sifive_Memory_Map
 {
     // Physical Memory
     // Base addresses for memory-mapped control and I/O devices
