@@ -1,6 +1,6 @@
 // EPOS ARMv7 Architecture Metainfo
-#ifndef __armv7_traits_h
-#define __armv7_traits_h
+#ifndef __riscv_traits_h
+#define __riscv_traits_h
 
 #include <system/config.h>
 

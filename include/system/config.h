@@ -9,12 +9,12 @@
 //============================================================================
 #define SMOD library
 #define ARCH riscv
-#define MACH pc
+#define MACH sifive
 #define MMOD sifive_e
 #define APPL hello
 #define __mode_library__
 #define __arch_riscv__
-#define __mach_pc__
+#define __mach_sifive__
 #define __mmod_sifive_e__
 
 //============================================================================
